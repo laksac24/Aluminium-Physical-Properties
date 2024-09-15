@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Aluminium Physical Properties</title>
+</head>
+<body>
+<h1>Let's check the Physical Properties of your Aluminium Rod</h1>
+        <form action="{{url_for('predict')}}" method="post">
+
+            <br>
+            <br>
+            <label><b>Aluminium (%):</b></label>
+            <input type="text" name="al" id="al" placeholder="Enter the Value">
+            <br>
+            <br>
+            <label><b>Magnisium (%):</b></label>
+            <input type="text" name="mg" id="mg" placeholder="Enter the Value">
+            <br>
+            <br>
+            <label><b>Silicon (%):</b></label>
+            <input type="text" name="si" id="si" placeholder="Enter the Value">
+            <br>
+            <br>
+            <label><b>Zinc (%):</b></label>
+            <input type="text" name="zn" id="zn" placeholder="Enter the Value">
+            <br>
+            <br>
+            <label><b>Temprature:</b></label>
+            <input type="text" name="temp" id="temp" placeholder="Enter the Value">
+            <br>
+            <br>
+            <label><b>Rolling Speed:</b></label>
+            <input type="text" name="rs" id="rs" placeholder="Enter the Value">
+            <br>
+            <br>
+            <label><b>Heat Treatment:</b></label>-->
+            <select name="heat" id="heat" required="1" >
+                {% for heat in heat_treat %}
+                    <option value="{{ heat }}">{{ heat }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <br>
+            <button type="submit">Predict Physical Properties</button>
+
+        </form>
+<h3>{{output1_text}}</h3>
+<br>
+<h3>{{output2_text}}</h3>
+<br>
+<h3>{{output3_text}}</h3>
+</body>
+</html>

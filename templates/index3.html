@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Aluminium Physical Properties</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #eaeaea;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            padding: 20px;
+            background-color: #007bff;
+            color: #fff;
+            margin: 0;
+        }
+        form {
+            max-width: 600px;
+            margin: 30px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin: 15px 0 5px;
+            color: #333;
+        }
+        input[type="text"], select {
+            width: calc(100% - 22px);
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="text"]:focus, select:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        h3 {
+            text-align: center;
+            color: #333;
+            margin: 20px 0;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: -10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<h1>Let's check the Physical Properties of your Aluminium Rod</h1>
+    <form id="propertiesForm" action="{{url_for('predict')}}" method="post">
+
+        <label><b>Aluminium (%):</b></label>
+        <input type="text" name="al" id="al" placeholder="Enter the Value">
+        <div class="error" id="alError"></div>
+
+        <label><b>Magnesium (%):</b></label>
+        <input type="text" name="mg" id="mg" placeholder="Enter the Value">
+        <div class="error" id="mgError"></div>
+
+        <label><b>Silicon (%):</b></label>
+        <input type="text" name="si" id="si" placeholder="Enter the Value">
+        <div class="error" id="siError"></div>
+
+        <label><b>Zinc (%):</b></label>
+        <input type="text" name="zn" id="zn" placeholder="Enter the Value">
+        <div class="error" id="znError"></div>
+
+        <label><b>Temperature:</b></label>
+        <input type="text" name="temp" id="temp" placeholder="Enter the Value">
+        <div class="error" id="tempError"></div>
+
+        <label><b>Rolling Speed:</b></label>
+        <input type="text" name="rs" id="rs" placeholder="Enter the Value">
+        <div class="error" id="rsError"></div>
+
+        <label><b>Heat Treatment:</b></label>
+        <select name="heat" id="heat" required>
+            {% for heat in heat_treat %}
+                <option value="{{ heat }}">{{ heat }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Predict Physical Properties</button>
+
+    </form>
+    <h3 id="output1">{{output1_text}}</h3>
+    <h3 id="output2">{{output2_text}}</h3>
+    <h3 id="output3">{{output3_text}}</h3>
+
+    <script>
+        document.getElementById('propertiesForm').addEventListener('submit', function(event) {
+            let isValid = true;
+
+            const inputs = document.querySelectorAll('input[type="text"]');
+            inputs.forEach(input => {
+                const errorElement = document.getElementById(input.id + 'Error');
+                if (input.value.trim() === '') {
+                    errorElement.textContent = 'This field is required';
+                    isValid = false;
+                } else if (isNaN(input.value.trim())) {
+                    errorElement.textContent = 'Please enter a valid number';
+                    isValid = false;
+                } else {
+                    errorElement.textContent = '';
+                }
+            });
+
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>

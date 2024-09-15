@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Aluminium Physical Properties</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            background: url({{ url_for('static', filename='image.jpg') }}) no-repeat;
+            background-size: cover;
+            background-position: center;
+        }
+        h1 {
+            text-align: center;
+            color: #fff;
+            background-color: #007bff;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            max-width: 600px; /* Decreased width */
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            font-weight: bold;
+            margin-top: 15px;
+            color: #333;
+        }
+        input[type="text"], select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px; /* Reduced spacing */
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="text"]:focus, select:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            margin-top: 15px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: -10px;
+            margin-bottom: 10px;
+        }
+        .outputs {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center align */
+            margin-top: 20px;
+            padding: 20px;
+            background: #e9ecef;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .outputs h3 {
+            margin: 10px 0;
+            color: #333;
+            text-align: center; /* Center align text */
+            background: #ffffff;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            width: 100%; /* Full width */
+            max-width: 500px; /* Max width for larger screens */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Slight shadow */
+        }
+    </style>
+</head>
+<body>
+    <h1>Check the Physical Properties of Your Aluminium Rod</h1>
+    <div class="container">
+        <form id="propertiesForm" action="{{url_for('predict')}}" method="post">
+            <label for="al"><b>Aluminium (%):</b></label>
+            <input type="text" name="al" id="al" placeholder="Enter the Value">
+            <div class="error" id="alError"></div>
+
+            <label for="mg"><b>Magnesium (%):</b></label>
+            <input type="text" name="mg" id="mg" placeholder="Enter the Value">
+            <div class="error" id="mgError"></div>
+
+            <label for="si"><b>Silicon (%):</b></label>
+            <input type="text" name="si" id="si" placeholder="Enter the Value">
+            <div class="error" id="siError"></div>
+
+            <label for="zn"><b>Zinc (%):</b></label>
+            <input type="text" name="zn" id="zn" placeholder="Enter the Value">
+            <div class="error" id="znError"></div>
+
+            <label for="temp"><b>Temperature:</b></label>
+            <input type="text" name="temp" id="temp" placeholder="Enter the Value">
+            <div class="error" id="tempError"></div>
+
+            <label for="rs"><b>Rolling Speed:</b></label>
+            <input type="text" name="rs" id="rs" placeholder="Enter the Value">
+            <div class="error" id="rsError"></div>
+
+            <label for="heat"><b>Heat Treatment:</b></label>
+            <select name="heat" id="heat" required>
+                {% for heat in heat_treat %}
+                    <option value="{{ heat }}">{{ heat }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit">Predict Physical Properties</button>
+        </form>
+
+        <div class="outputs">
+            <h3 id="output1">{{output1_text}}</h3>
+            <h3 id="output2">{{output2_text}}</h3>
+            <h3 id="output3">{{output3_text}}</h3>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('propertiesForm').addEventListener('submit', function(event) {
+            let isValid = true;
+            const inputs = document.querySelectorAll('input[type="text"]');
+            inputs.forEach(input => {
+                const errorElement = document.getElementById(input.id + 'Error');
+                if (input.value.trim() === '') {
+                    errorElement.textContent = 'This field is required';
+                    isValid = false;
+                } else if (isNaN(input.value.trim())) {
+                    errorElement.textContent = 'Please enter a valid number';
+                    isValid = false;
+                } else {
+                    errorElement.textContent = '';
+                }
+            });
+
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
